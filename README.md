@@ -11,6 +11,7 @@ can't wait until they finish to turn the computer off ourselves, we decide
 to open another terminal and run:
 
 $ sudo su
+
 $ sleep(3600) && init 0
 
 which will make the computer turn off after an hour. This is quite a bad
@@ -18,7 +19,8 @@ idea since these updates may even take longer (not likely, but just go with
 it). Instead now we can do:
 
 $ sudo su
-$ aeo apt-get && init 0
+
+$ aeo -p apt-get && init 0
 
 which will turn off the computer only after the process apt-get has downloaded
 and installed all updates.
@@ -33,8 +35,24 @@ more time that it needs to. So, how do we force it to turn itself off after
 the simulation? Just type:
 
 $ sudo su
+
 $ ./execute-simulation ; init 0
 
 However, we are in a hurry, so we completely forget about the second command.
 What can we do after one hour of progress? Kill the process and start over, or
 use the aeo?
+
+# Usage
+
+The complete usage can be seen using option -h:
+
+$ aeo -h
+
+You can specify the interval time used to check the status of the process. To use
+a period of 0.5 seconds:
+
+$ aeo -p apt-get -i 0.5
+
+The order of the options does not matter. The format of the decimal number must
+conform to the format described in the manual page of the C function: strtod.
+See https://linux.die.net/man/3/strtod for the documentation.
