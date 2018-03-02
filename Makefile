@@ -5,7 +5,7 @@ aeo: wait.o
 	gcc -O2 -o aeo wait.o
 
 wait.o: wait.c
-	gcc -O2 -c wait.c
+	gcc -O2 -Wall -c wait.c
 
 clean:
 	rm -f wait.o
