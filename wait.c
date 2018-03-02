@@ -23,11 +23,11 @@ void parse_seconds(const char *str, double *s, char *should_exit) {
 	*s = strtod(str, &err);
 
 	/*
-	   according to the manual:
+	according to the manual:
 
-	   If  no conversion is performed, zero is returned and the value of
-	   nptr is stored in the location referenced by endptr.
-	   */
+	If  no conversion is performed, zero is returned and the value of
+	nptr is stored in the location referenced by endptr.
+	*/
 	if (err == str) {
 		fprintf(stderr, "Error: no conversion of '%s' into double could be performed\n", str);
 		*should_exit = 1;
@@ -35,15 +35,15 @@ void parse_seconds(const char *str, double *s, char *should_exit) {
 	}
 
 	/*
-	   according to the manual:
+	according to the manual:
 
-	   If the correct value would cause overflow, plus or minus HUGE_VAL
-	   (HUGE_VALF, HUGE_VALL) is returned (according  to  the  sign  of
-	   the value), and ERANGE is stored in errno.
+	If the correct value would cause overflow, plus or minus HUGE_VAL
+	(HUGE_VALF, HUGE_VALL) is returned (according  to  the  sign  of
+	the value), and ERANGE is stored in errno.
 
-	   If the correct value would cause underflow, zero is returned and
-	   ERANGE is stored in errno.
-	   */
+	If the correct value would cause underflow, zero is returned and
+	ERANGE is stored in errno.
+	*/
 	if (errno == ERANGE && (*s == HUGE_VAL || *s == HUGE_VALF || *s == HUGE_VALL)) {
 		fprintf(stderr, "Error: value '%s' causes overflow\n", str);
 		*should_exit = 1;
