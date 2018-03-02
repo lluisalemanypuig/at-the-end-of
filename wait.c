@@ -17,23 +17,6 @@ void show_usage() {
 	printf("        A negative value is interpreted as 'never' (default)\n");
 }
 
-inline double now() {
-	struct timeval tim;
-	struct rusage ru;
-	getrusage(RUSAGE_SELF, &ru);
-	tim = ru.ru_utime;
-	return ((double)tim.tv_sec + ((double)tim.tv_usec)/1000000.0);
-}
-
-// return the time in seconds 
-inline double elapsed_time(double begin, double end) {
-	return (end - begin >= 0.0 ? end - begin : 0.0);
-}
-
-inline double min(double a, double b) {
-	return (a < b ? a : b);
-}
-
 void parse_seconds(const char *str, double *s, char *should_exit) {
 
 	char *err;
@@ -136,13 +119,13 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 	
-	const double begin = now();
-	double end = begin;
+	double end = 0.0;
 
 	if (a_time < 0.0) {
 		// run forever (or until the process finishes)
+
 		while (system(buf) == 0) {
-			usleep(s_time*1000000.0);
+			sleep(s_time);
 		}
 		return 0;
 	}
@@ -150,21 +133,24 @@ int main(int argc, char *argv[]) {
 	// poll the system every 's_time' seconds until we are
 	// at the last poll before the aborting time
 
-	while (system(buf) == 0 && elapsed_time(begin, end) + s_time < a_time) {
-		printf("1\n");
-		usleep(s_time*1000000.0);
+	while (system(buf) == 0 && end + s_time < a_time) {
+		sleep(s_time);
 		end += s_time;
-		printf("elapsed time: %f\n", elapsed_time(begin, end));
 	}
 
 	// poll the system a bit more frequently
 	// until the abort time is exhausted
-	const double r = a_time - elapsed_time(begin, end);
-	while (system(buf) == 0 && elapsed_time(begin, end) < a_time) {
-		printf("1\n");
-		usleep((r/s_time)*1000000.0);
-		end += r/s_time;
-		printf("elapsed time: %f\n", elapsed_time(begin, end));
+
+	// remaining time to wait
+	const double r = a_time - end;
+
+	// new polling time (seconds, microseconds)
+	const double ns_time = r/s_time;
+	const double uns_time = ns_time*1000000.0;
+
+	while (system(buf) == 0 && end < a_time) {
+		usleep(uns_time);
+		end += ns_time;
 	}
 
 	return 0;
