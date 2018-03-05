@@ -66,22 +66,23 @@ int main(int argc, char *argv[]) {
 	char error_parsing_abort = 0;
 
 	// parse options: if help option is found then print usage and exit
-	for (int i = 1; i < argc; ++i) {
-		if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
+	int arg_i;
+	for (arg_i = 1; arg_i < argc; ++arg_i) {
+		if (strcmp(argv[arg_i], "-h") == 0 || strcmp(argv[arg_i], "--help") == 0) {
 			show_usage();
 			return 0;
 		}
-		else if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--process-name") == 0) {
-			p_name = argv[i + 1];
-			++i;
+		else if (strcmp(argv[arg_i], "-p") == 0 || strcmp(argv[arg_i], "--process-name") == 0) {
+			p_name = argv[arg_i + 1];
+			++arg_i;
 		}
-		else if (strcmp(argv[i], "-i") == 0 || strcmp(argv[i], "--interval") == 0) {
-			parse_seconds(argv[i + 1], &s_time, &error_parsing_interval);
-			++i;
+		else if (strcmp(argv[arg_i], "-i") == 0 || strcmp(argv[arg_i], "--interval") == 0) {
+			parse_seconds(argv[arg_i + 1], &s_time, &error_parsing_interval);
+			++arg_i;
 		}
-		else if (strcmp(argv[i], "-a") == 0 || strcmp(argv[i], "--abort") == 0) {
-			parse_seconds(argv[i + 1], &a_time, &error_parsing_abort);
-			++i;
+		else if (strcmp(argv[arg_i], "-a") == 0 || strcmp(argv[arg_i], "--abort") == 0) {
+			parse_seconds(argv[arg_i + 1], &a_time, &error_parsing_abort);
+			++arg_i;
 		}
 	}
 
