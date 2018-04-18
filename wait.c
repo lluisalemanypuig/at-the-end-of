@@ -18,7 +18,6 @@ void show_usage() {
 }
 
 void parse_seconds(const char *str, double *s, char *should_exit) {
-
 	char *err;
 	*s = strtod(str, &err);
 
@@ -86,6 +85,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	// error control
 	if (error_parsing_interval == 1) {
 		fprintf(stderr, "An error occurred while parsing interval time\n");
 		return 1;
@@ -120,8 +120,11 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 	
-	double end = 0.0;
+	// start polling the system for process status
 
+	// Method 1. If no abort time was specified just poll the
+	// process' status every 'sleep time' seconds. Terminate
+	// execution when all processes have finished.
 	if (a_time < 0.0) {
 		// run forever (or until the process finishes)
 
@@ -131,16 +134,16 @@ int main(int argc, char *argv[]) {
 		return 0;
 	}
 
-	// poll the system every 's_time' seconds until we are
-	// at the last poll before the aborting time
-
+	// Method 2. Poll the system every 's_time' seconds until
+	// we are at the last poll before the aborting time.
+	double end = 0.0;
 	while (system(buf) == 0 && end + s_time < a_time) {
 		sleep(s_time);
 		end += s_time;
 	}
 
-	// poll the system a bit more frequently
-	// until the abort time is exhausted
+	// Method 2. (continued) Poll the system a bit more frequently
+	// until the abort time is exhausted.
 
 	// remaining time to wait
 	const double r = a_time - end;
