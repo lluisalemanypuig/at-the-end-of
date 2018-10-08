@@ -55,7 +55,7 @@ The order of the options does not matter. The format of the decimal number must
 conform to the format described in the manual page of the C function: strtod.
 See https://linux.die.net/man/3/strtod for the documentation.
 
-## Requirements
+## Dependencies
 
 The operative system must have the utility _pidof_ and have the following headers:
 
