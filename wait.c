@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	char buf[256 + 21]; // allow process name of 256 characters
+	char buf[256 + 25]; // allow process name of 256 characters
 	int print_res = sprintf(buf, "pidof -x %s > /dev/null", p_name);
 	if (print_res < 0) {
 		fprintf(stderr, "Error when creating buffer\n");
