@@ -61,6 +61,11 @@ The operative system must have the utility _pidof_ and have the following header
 
 - <sys/resource.h>
 - <unistd.h>
+- <stdlib.h>
+- <string.h>
+- <stdio.h>
+- <errno.h>
+- <math.h>
 
 ## Testing
 
